@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-
 const sizes = {
   small: css`
     font-size: 1.2rem;
@@ -19,7 +18,6 @@ const sizes = {
     font-weight: 500;
   `,
 };
-
 const variations = {
   primary: css`
     color: var(--color-brand-50);
