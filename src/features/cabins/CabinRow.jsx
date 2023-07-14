@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -38,3 +37,16 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+import React from "react";
+
+const CabinRow = ({ cabin }) => {
+  const { name, maxCapacity, regularPrice, discount, image } = cabin;
+  return (
+    <TableRow role='row'>
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+    </TableRow>
+  );
+};
+
+export default CabinRow;
