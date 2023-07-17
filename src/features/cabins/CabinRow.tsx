@@ -1,10 +1,18 @@
-/* eslint-disable react/prop-types */
-
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCabins } from "../../services/apiCabins";
 import { toast } from "react-hot-toast";
+
+interface Cabin {
+  id: number;
+  name: string;
+  maxCapacity: number;
+  regularPrice: number;
+  discount: number;
+  image: string;
+}
+
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -26,7 +34,7 @@ const Img = styled.img`
   transform: scale(1.5) translateX(-7px);
 `;
 
-const Cabin = styled.div`
+const CabinName = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
@@ -44,7 +52,11 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-const CabinRow = ({ cabin }) => {
+interface CabinRowProps {
+  cabin: Cabin;
+}
+
+const CabinRow: React.FC<CabinRowProps> = ({ cabin }) => {
   const queryClient = useQueryClient();
   const { isLoading: isDeleting, mutate } = useMutation({
     mutationFn: deleteCabins,
@@ -56,19 +68,13 @@ const CabinRow = ({ cabin }) => {
       toast.error(error.message);
     },
   });
-  const {
-    id: cabinId,
-    name,
-    maxCapacity,
-    regularPrice,
-    discount,
-    image,
-  } = cabin;
+  const { id: cabinId, name, maxCapacity, regularPrice, discount, image } =
+    cabin;
   return (
-    <TableRow role='row'>
+    <TableRow role="row">
       <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to{maxCapacity} guests</div>
+      <CabinName>{name}</CabinName>
+      <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
       <button disabled={isDeleting} onClick={() => mutate(cabinId)}>
