@@ -7,6 +7,7 @@ const sizes = {
     font-weight: 600;
     text-align: center;
   `,
+
   medium: css`
     font-size: 1.4rem;
     padding: 1.2rem 1.6rem;
