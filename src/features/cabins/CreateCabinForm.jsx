@@ -60,21 +60,42 @@ function CreateCabinForm() {
   const onSubmit = (newCabin) => {
     mutate(newCabin);
   };
+  const onErrors = (errors) => {
+    console.log(errors);
+  };
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit, onErrors)}>
       <FormRow>
         <Label htmlFor='name'>Cabin name</Label>
-        <Input type='text' id='name' {...register("name")} />
+        <Input
+          type='text'
+          id='name'
+          {...register("name", {
+            required: "Please enter a name",
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor='maxCapacity'>Maximum capacity</Label>
-        <Input type='number' id='maxCapacity' {...register("maxCapacity")} />
+        <Input
+          type='number'
+          id='maxCapacity'
+          {...register("maxCapacity", {
+            required: "Please enter a maximum capacity",
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor='regularPrice'>Regular price</Label>
-        <Input type='number' id='regularPrice' {...register("regularPrice")} />
+        <Input
+          type='number'
+          id='regularPrice'
+          {...register("regularPrice", {
+            required: "Please enter a regular price",
+          })}
+        />
       </FormRow>
 
       <FormRow>
@@ -83,7 +104,9 @@ function CreateCabinForm() {
           type='number'
           id='discount'
           defaultValue={0}
-          {...register("discount")}
+          {...register("discount", {
+            required: "Please enter a discount if not 0",
+          })}
         />
       </FormRow>
 
@@ -93,7 +116,9 @@ function CreateCabinForm() {
           type='number'
           id='description'
           defaultValue=''
-          {...register("description")}
+          {...register("description", {
+            required: "Please enter a description",
+          })}
         />
       </FormRow>
 
