@@ -1,50 +1,64 @@
-import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addCabins } from "../../services/apiCabins";
+import FormRow from "../../ui/FormRow";
 import { toast } from "react-hot-toast";
-const FormRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-  padding: 1.2rem 0;
+import { addCabins } from "../../services/apiCabins";
 
-  &:first-child {
-    padding-top: 0;
-  }
+const schema = yup
+  .object()
+  .shape({
+    name: yup
+      .string()
+      .required("Cabin name is required")
+      .min(3, "Cabin should be at least 3 characters long"),
 
-  &:last-child {
-    padding-bottom: 0;
-  }
+    maxCapacity: yup
+      .number()
+      .required("Max capacity is required")
+      .typeError("Max capacity must be a number")
+      .positive("Max capacity must be a number or It can't be negative")
+      .min(1, "Max capacity should be at least 1"),
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
+    regularPrice: yup
+      .number()
+      .typeError("Regular price must be a number")
+      .required("Regular price is required")
+      .min(300, ({ min }) => `Regular price should be at least ${min}`),
 
-  &:has(button) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
-`;
+    discount: yup
+      .number()
+      .typeError("Discount must be a number and It can't be negative")
+      .required("Discount is required")
+      .positive("Discount must be a number and It can't be negative")
+      .min(0, "Discount should be at least 0")
+      .test(
+        "lessThanRegularPrice",
+        "Discount should be less than regular price",
+        function (value) {
+          if (value === "") return true; // Skip the validation if the field is empty
+          return value <= this.parent.regularPrice;
+        }
+      ),
 
-const Label = styled.label`
-  font-weight: 500;
-`;
-
-const Error = styled.span`
-  font-size: 1.4rem;
-  color: var(--color-red-700);
-`;
+    description: yup.string().required("Description is required"),
+  })
+  .strict();
 
 function CreateCabinForm() {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
   const quertClient = useQueryClient();
   const { mutate, isLoading: isCreating } = useMutation({
     mutationFn: addCabins,
@@ -60,70 +74,62 @@ function CreateCabinForm() {
   const onSubmit = (newCabin) => {
     mutate(newCabin);
   };
-  const onErrors = (errors) => {
+  const onError = (errors) => {
     console.log(errors);
   };
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onErrors)}>
-      <FormRow>
-        <Label htmlFor='name'>Cabin name</Label>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+      <FormRow label='Cabin name' error={errors?.name?.message}>
         <Input
           type='text'
           id='name'
-          {...register("name", {
-            required: "Please enter a name",
-          })}
+          disabled={isCreating}
+          {...register("name")}
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor='maxCapacity'>Maximum capacity</Label>
+      <FormRow label='Maximum capacity' error={errors?.maxCapacity?.message}>
         <Input
           type='number'
           id='maxCapacity'
-          {...register("maxCapacity", {
-            required: "Please enter a maximum capacity",
-          })}
+          disabled={isCreating}
+          {...register("maxCapacity")}
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor='regularPrice'>Regular price</Label>
+      <FormRow label='Regular price' error={errors?.regularPrice?.message}>
         <Input
           type='number'
           id='regularPrice'
-          {...register("regularPrice", {
-            required: "Please enter a regular price",
-          })}
+          disabled={isCreating}
+          {...register("regularPrice")}
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor='discount'>Discount</Label>
+      <FormRow label='Discount' error={errors?.discount?.message}>
         <Input
           type='number'
           id='discount'
+          disabled={isCreating}
           defaultValue={0}
-          {...register("discount", {
-            required: "Please enter a discount if not 0",
-          })}
+          {...register("discount")}
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor='description'>Description for website</Label>
+      <FormRow
+        label='Description for website'
+        error={errors?.description?.message}
+      >
         <Textarea
           type='number'
           id='description'
           defaultValue=''
-          {...register("description", {
-            required: "Please enter a description",
-          })}
+          disabled={isCreating}
+          {...register("description")}
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor='image'>Cabin photo</Label>
+      <FormRow label='Cabin photo'>
         <FileInput id='image' accept='image/*' />
       </FormRow>
 
