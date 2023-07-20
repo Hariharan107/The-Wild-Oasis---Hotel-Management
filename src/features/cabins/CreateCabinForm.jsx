@@ -45,7 +45,11 @@ function CreateCabinForm() {
           id='name'
           disabled={isCreating}
           {...register("name", {
-            required: "This field is required",
+            required: "This Cabin must have a name",
+            minLength:{
+              value: 3,
+              message: "Cabin name should be at least 3 characters long",
+            }
           })}
         />
       </FormRow>
