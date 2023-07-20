@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -32,7 +31,7 @@ function CreateCabinForm() {
     },
   });
   const onSubmit = (newCabin) => {
-    mutate(newCabin);
+    mutate({ ...newCabin, image: newCabin.image[0] });
   };
   // const onErrors = (errors) => {
   //   console.log(errors);
@@ -46,10 +45,10 @@ function CreateCabinForm() {
           disabled={isCreating}
           {...register("name", {
             required: "This Cabin must have a name",
-            minLength:{
+            minLength: {
               value: 3,
               message: "Cabin name should be at least 3 characters long",
-            }
+            },
           })}
         />
       </FormRow>
@@ -122,9 +121,15 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow label='image' disabled={isCreating}>
+      <FormRow label='Cabin photo' disabled={isCreating}>
         {/* <Label htmlFor='image'>Cabin photo</Label> */}
-        <FileInput id='image' accept='image/*' />
+        <FileInput
+          id='image'
+          accept='image/*'
+          {...register("image", {
+            required: "This field is required",
+          })}
+        />
       </FormRow>
 
       <FormRow>
