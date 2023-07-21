@@ -47,7 +47,6 @@ const Discount = styled.div`
 `;
 
 const CabinRow = ({ cabin }) => {
-  console.log(cabin);
   const [showForm, setShowForm] = useState(false);
   const { isCreating, createCabin } = useCreateCabin();
   const { isDeleting, deleteCabin } = useDeleteCabin();
