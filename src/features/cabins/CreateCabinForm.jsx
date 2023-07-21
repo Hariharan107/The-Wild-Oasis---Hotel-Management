@@ -12,7 +12,6 @@ import { createAndEditCabin } from "../../services/apiCabins";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editID, ...editValues } = cabinToEdit;
-  console.log(editID, editValues);
   const isEditSession = Boolean(editID);
 
   const {
@@ -24,7 +23,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
-
   const quertClient = useQueryClient();
   const { mutate: createCabin, isLoading: isCreating } = useMutation({
     mutationFn: createAndEditCabin,
