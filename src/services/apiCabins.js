@@ -8,7 +8,7 @@ export const getCabins = async () => {
   }
   return data;
 };
-//Create Cabin
+//Create and Edit Cabin
 export const addCabins = async (newCabin) => {
   // https://zhwpqjjjronwhdoaffta.supabase.co/storage/v1/object/public/cabin-images/cabin-002.jpg
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
@@ -16,6 +16,7 @@ export const addCabins = async (newCabin) => {
     ""
   );
   const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+
   //1.Create Cabin
   const { data, error } = await supabase
     .from("cabins")
