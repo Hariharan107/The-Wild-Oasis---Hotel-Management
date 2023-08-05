@@ -5,7 +5,9 @@ import { useSettings } from "./useSettings";
 import Spinner from "../../ui/Spinner";
 import { toast } from "react-hot-toast";
 import { useUpdateSetting } from "./useUpdateSetting";
+
 function UpdateSettingsForm() {
+
   const { isUpdating, updateSetting } = useUpdateSetting();
   const {
     isLoading,
@@ -59,7 +61,7 @@ function UpdateSettingsForm() {
         <Input
           type='number'
           id='breakfast-price'
-          defaultValue={breakfastPrice}
+          defaultValue={breakfastPrice}  
           disabled={isUpdating}
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
         />

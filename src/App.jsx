@@ -18,15 +18,13 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 0, // 1 minute
-        // staleTime: 0,
+        staleTime: 0,
       },
     },
   });
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
