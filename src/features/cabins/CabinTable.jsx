@@ -1,9 +1,10 @@
-import styled from "styled-components";
+
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
 import { toast } from "react-hot-toast";
 import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
 
 // const TableHeader = styled.header`
 //   display: grid;
@@ -24,7 +25,7 @@ const CabinTable = () => {
   if (isLoading) return <Spinner />;
   if (error) return toast.error(error.message);
   return (
-    <>
+    <Menus>
       <Table columns='0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'>
         <Table.Header>
           <div></div>
@@ -39,7 +40,7 @@ const CabinTable = () => {
           render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>
-    </>
+    </Menus>
   );
 };
 
