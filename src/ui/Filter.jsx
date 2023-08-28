@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
@@ -35,21 +36,24 @@ const FilterButton = styled.button`
   }
 `;
 
-const Filter = () => {
+const Filter = ({ filterField, options }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const handleClick = (filter) => {
-    searchParams.set("discount", filter);
+  const currentFilter = searchParams.get(filterField) || options[0].value;
+  const handleClick = (filterValue) => {
+    searchParams.set(filterField, filterValue);
     setSearchParams(searchParams);
   };
   return (
     <StyledFilter>
-      <FilterButton onClick={() => handleClick("all")}>All</FilterButton>
-      <FilterButton onClick={() => handleClick("no-discount")}>
-        No discount
-      </FilterButton>
-      <FilterButton onClick={() => handleClick("with-discount")}>
-        Discount
-      </FilterButton>
+      {options.map(({ value, label }, index) => (
+        <FilterButton
+          key={index}
+          active={value === currentFilter}
+          onClick={() => handleClick(value)}
+        >
+          {label}
+        </FilterButton>
+      ))}
     </StyledFilter>
   );
 };
