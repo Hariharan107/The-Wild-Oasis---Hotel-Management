@@ -7,14 +7,13 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 
 const CabinTable = () => {
-  const { isLoading, cabins, error } = useCabins();
+  const { isLoading, cabins = [], error } = useCabins();
   const [searchParams] = useSearchParams();
   const filterValue = searchParams.get("discount") || "all";
 
   if (isLoading) return <Spinner />;
   if (error) return toast.error(error.message);
-  let filteredCabins;
-  if (filterValue === "all") filteredCabins = cabins;
+  let filteredCabins = cabins;
   if (filterValue === "no-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
   if (filterValue === "with-discount")
