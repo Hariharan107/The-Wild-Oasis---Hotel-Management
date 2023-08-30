@@ -98,7 +98,7 @@ async function createBookings() {
 
   const { error } = await supabase.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);
-}
+ 
 
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);

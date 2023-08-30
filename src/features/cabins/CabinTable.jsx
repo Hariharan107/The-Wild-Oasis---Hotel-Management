@@ -5,13 +5,14 @@ import { useCabins } from "./useCabins";
 import { toast } from "react-hot-toast";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
-
+import Empty from "../../ui/Empty";
 const CabinTable = () => {
   const { isLoading, cabins = [], error } = useCabins();
   const [searchParams] = useSearchParams();
   const filterValue = searchParams.get("discount") || "all";
 
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName='cabins' />;
   if (error) return toast.error(error.message);
   // Filter cabins
   let filteredCabins = cabins;
