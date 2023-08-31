@@ -6,7 +6,8 @@ export const getBookings = async ({ filter, sortBy }) => {
     .select(
       "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)"
     );
-  if (filter !== null) query = query.eq(filter.field, filter.value);
+  if (filter !== null)
+    query = query[filter.method || "eq"](filter.field, filter.value);
   const { data, error } = await query;
   if (error) {
     console.error(error);

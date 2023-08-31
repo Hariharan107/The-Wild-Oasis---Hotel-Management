@@ -8,12 +8,13 @@ export const useBookings = () => {
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
+  // : { field: "totalPrice", value: 5000, method: "gte" };
   const {
     isLoading,
     data: bookings,
     error,
   } = useQuery({
-    queryKey: ["bookings"],
+    queryKey: ["bookings", filter],
     queryFn: () => getBookings({ filter }),
   });
   return { isLoading, bookings, error };
