@@ -5,6 +5,7 @@ import Empty from "../../ui/Empty";
 import { useBookings } from "./useBookings";
 import Spinner from "../../ui/Spinner";
 import { toast } from "react-hot-toast";
+import Pagination from "../../ui/Pagination";
 function BookingTable() {
   const { isLoading, bookings, error } = useBookings();
   if (isLoading) return <Spinner />;
@@ -28,6 +29,9 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <Table.Footer>
+          <Pagination count={45} />
+        </Table.Footer>
       </Table>
     </Menus>
   );
