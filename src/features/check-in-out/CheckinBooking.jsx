@@ -1,13 +1,14 @@
-import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import styled from 'styled-components';
+import BookingDataBox from '../../features/bookings/BookingDataBox';
 
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
-
-import { useMoveBack } from "../../hooks/useMoveBack";
+import Row from '../../ui/Row';
+import Heading from '../../ui/Heading';
+import ButtonGroup from '../../ui/ButtonGroup';
+import Button from '../../ui/Button';
+import ButtonText from '../../ui/ButtonText';
+import { useBooking } from '../bookings/useBooking';
+import { useMoveBack } from '../../hooks/useMoveBack';
+import Spinner from '../../ui/Spinner';
 
 const Box = styled.div`
   /* Box */
@@ -18,25 +19,17 @@ const Box = styled.div`
 `;
 
 function CheckinBooking() {
+  const { booking, isLoading, error } = useBooking();
   const moveBack = useMoveBack();
 
-  const booking = {};
-
-  const {
-    id: bookingId,
-    guests,
-    totalPrice,
-    numGuests,
-    hasBreakfast,
-    numNights,
-  } = booking;
+  const { id: bookingId, guests, totalPrice, numGuests, hasBreakfast, numNights } = booking;
 
   function handleCheckin() {}
-
+  if (isLoading) return <Spinner />;
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1">Check in booking #{bookingId}</Heading>
+      <Row type='horizontal'>
+        <Heading as='h1'>Check in booking #{bookingId}</Heading>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
@@ -44,7 +37,7 @@ function CheckinBooking() {
 
       <ButtonGroup>
         <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
-        <Button variation="secondary" onClick={moveBack}>
+        <Button variation='secondary' onClick={moveBack}>
           Back
         </Button>
       </ButtonGroup>
