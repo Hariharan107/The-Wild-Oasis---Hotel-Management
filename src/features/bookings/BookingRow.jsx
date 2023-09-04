@@ -1,17 +1,17 @@
-import styled from "styled-components";
-import { format, isToday } from "date-fns";
-
-import Tag from "../../ui/Tag";
-import Table from "../../ui/Table";
-
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
-
+import styled from 'styled-components';
+import { format, isToday } from 'date-fns';
+import Menus from '../../ui/Menus';
+import Tag from '../../ui/Tag';
+import Table from '../../ui/Table';
+import { formatCurrency } from '../../utils/helpers';
+import { formatDistanceFromNow } from '../../utils/helpers';
+import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye, HiTrash } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
-  font-family: "Sono";
+  font-family: 'Sono';
 `;
 
 const Stacked = styled.div`
@@ -30,7 +30,7 @@ const Stacked = styled.div`
 `;
 
 const Amount = styled.div`
-  font-family: "Sono";
+  font-family: 'Sono';
   font-weight: 500;
 `;
 
@@ -49,11 +49,11 @@ function BookingRow({
   },
 }) {
   const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
+    unconfirmed: 'blue',
+    'checked-in': 'green',
+    'checked-out': 'silver',
   };
-
+  const navigate = useNavigate();
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -65,20 +65,24 @@ function BookingRow({
 
       <Stacked>
         <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}
+          {isToday(new Date(startDate)) ? 'Today' : formatDistanceFromNow(startDate)}
           &rarr; {numNights} night stay
         </span>
         <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;
-          {format(new Date(endDate), "MMM dd yyyy")}
+          {format(new Date(startDate), 'MMM dd yyyy')} &mdash;
+          {format(new Date(endDate), 'MMM dd yyyy')}
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Menus.Menu>
+        <Menus.Toggle id={bookingId} />
+        <Menus.List id={bookingId}>
+          <Menus.Button icon={<HiEye />} onClick={() => navigate(`/booking/${bookingId}`)}>See details</Menus.Button>
+        </Menus.List>
+      </Menus.Menu>
     </Table.Row>
   );
 }
