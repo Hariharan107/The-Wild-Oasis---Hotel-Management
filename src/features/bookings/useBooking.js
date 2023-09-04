@@ -8,7 +8,7 @@ export const useBooking = () => {
     data: booking = {},
     error,
   } = useQuery({
-    queryKey: ['booking'],
+    queryKey: ['booking', bookingId],
     queryFn: () => getBooking(bookingId),
   });
   return { isLoading, booking, error };
