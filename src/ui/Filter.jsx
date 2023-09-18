@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useSearchParams } from "react-router-dom";
-import styled, { css } from "styled-components";
+import { useSearchParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -40,6 +40,7 @@ const Filter = ({ filterField, options }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options[0].value;
   const handleClick = (filterValue) => {
+    if (searchParams.get('page')) searchParams.set('page', 1);
     searchParams.set(filterField, filterValue);
     setSearchParams(searchParams);
   };
